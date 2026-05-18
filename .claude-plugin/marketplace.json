@@ -11,7 +11,7 @@
       "name": "personal-engineering-skills",
       "source": {
         "source": "github",
-        "repo": "YOUR-GITHUB-USERNAME/personal-engineering-skills"
+        "repo": "felixfrimpong-amalitech/personal-engineering-skills"
       },
       "description": "Design-layer skills: system-design-docs (arc42-style evergreen design), architecture-diagrams (diagrams-as-code with C4), feature-design-doc (Google-style point-in-time design review), poc-production-fidelity (keep architectural boundaries, simplify runtime)."
     }

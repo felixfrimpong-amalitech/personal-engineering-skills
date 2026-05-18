@@ -37,7 +37,7 @@ planning → build → test → review → ship
 ## Install — Claude Code
 
 ```sh
-/plugin marketplace add YOUR-GITHUB-USERNAME/personal-engineering-skills
+/plugin marketplace add felixfrimpong-amalitech/personal-engineering-skills
 /plugin install personal-engineering-skills@personal-engineering-skills
 ```
 
