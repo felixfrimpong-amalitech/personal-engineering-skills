@@ -1,7 +1,7 @@
 {
   "name": "personal-engineering-skills",
   "description": "Personal engineering skills overlay — design-layer practices (system design docs, architecture diagrams, feature design docs, POC production fidelity) that compose with general-purpose skill libraries like addyosmani/agent-skills.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "Felix Frimpong"
   },

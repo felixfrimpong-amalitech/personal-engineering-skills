@@ -45,20 +45,43 @@ The skills load alongside any other installed skill libraries — no fork, no ov
 
 Verify with `/plugin list` — you should see `personal-engineering-skills` and any other installed libraries (e.g. `agent-skills` from Addy Osmani).
 
+## Use with Codex and Copilot (per-project install)
+
+Claude Code has a real plugin system; Codex and Copilot don't. For those tools the skills are distributed as files **inside each project that wants them**. Use the installer:
+
+```sh
+# From any project root:
+~/personal-engineering-skills/scripts/install.sh
+
+# Or pin a target and subset of tools:
+~/personal-engineering-skills/scripts/install.sh \
+  --target ~/path/to/project \
+  --tool codex,copilot
+```
+
+The installer:
+
+1. Clones (or updates) Addy's `agent-skills` + this overlay into a global cache (`~/.cache/eng-skills/`).
+2. Snapshots every `SKILL.md` into `<project>/.skills/<name>.md` (flat directory; this overlay overrides Addy's on name collisions).
+3. Writes a pointer file per tool — `CLAUDE.md` (Claude Code project instructions), `AGENTS.md` (Codex), `.github/copilot-instructions.md` (Copilot). Each contains a discovery flowchart, core operating behaviors, and a catalog table linking to `.skills/<name>.md` for the full body.
+
+All pointer files use a managed block (`<!-- BEGIN: engineering-skills -->...<!-- END: engineering-skills -->`); existing content outside the markers is preserved on re-run.
+
+See [`scripts/README.md`](./scripts/README.md) for full options and the commit-vs-gitignore trade-off for `.skills/`.
+
 ## Use with other tools / LLMs
 
-The canonical format is `skills/<name>/SKILL.md` — plain markdown with YAML frontmatter. Any LLM-aware tool can consume it; the integration is just a question of how the tool discovers files.
+The canonical format is `skills/<name>/SKILL.md` — plain markdown with YAML frontmatter. Any LLM-aware tool can consume it.
 
 | Tool | How to use |
 |---|---|
-| **Claude Code** | Install as a plugin (above). Skills appear automatically. |
-| **Claude Desktop / API** | `cat skills/*/SKILL.md` into your system prompt, or load and inject the relevant `SKILL.md` based on task triggers. |
-| **Cursor** | Copy a SKILL.md's body into `.cursor/rules/<name>.md`, or reference via `@file` in chat. |
-| **Aider** | Add the relevant SKILL.md to `--read` files, or list them in `.aider.conf.yml` under `read:`. |
-| **GitHub Copilot Workspace / Codex** | Paste the relevant SKILL.md into the task or working-context window. |
+| **Claude Code** | Install as a plugin (above). Skills appear globally. |
+| **OpenAI Codex / GitHub Copilot** | Run `scripts/install.sh` in the project root (see above). |
+| **Claude Desktop / API** | Inject the relevant `SKILL.md` based on task triggers. |
+| **Aider** | Add the relevant SKILL.md files to `--read`, or list them in `.aider.conf.yml`. |
 | **ChatGPT / Gemini / generic chat** | Paste or attach SKILL.md when starting a task; the frontmatter `description` field tells the model when to apply it. |
 
-The portability principle: **the markdown file is the source of truth; per-tool wiring is a thin adapter.** If a new tool emerges with its own format, write a small script that reads `skills/*/SKILL.md` and emits the tool's native format. Don't fork the skills.
+The portability principle: **the markdown file is the source of truth; per-tool wiring is a thin adapter.** If a new tool emerges with its own format, extend `scripts/install.sh` with another generator. Don't fork the skills.
 
 ## Layering with addyosmani/agent-skills
 
