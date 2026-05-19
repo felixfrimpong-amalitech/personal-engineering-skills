@@ -193,7 +193,10 @@ workflow, templates, and verification checklist.
 |---|---|
 BODY
 
-  for skill_md in $(ls "$SKILLS_DIR"/*.md 2>/dev/null | sort); do
+  # Bash glob is already lexicographically sorted; quoting the prefix
+  # ensures paths with spaces in $SKILLS_DIR are preserved per item.
+  for skill_md in "$SKILLS_DIR"/*.md; do
+    [[ -f "$skill_md" ]] || continue
     name="$(basename "$skill_md" .md)"
     desc="$(awk -F': ' '/^description:/ {sub(/^description: */, ""); print; exit}' "$skill_md")"
     desc_escaped="${desc//|/\\|}"
